@@ -12,8 +12,9 @@ $font-black:#111;
 $font-base:#646464;
 
 // layout
-$container-width: 1341px;
-$header-height:110px;
+//                 왼쪽 카드  여백   오른쪽
+$container-width: (40px+420*3+40*2px+40px);
+$padding-global:40px;
 
 //font
 $font-family-en :'Raleway', 'Apple SD Gothic Neo','Noto Sans KR','NanumGothic',나눔고딕,'맑은고딕','MalgunGothic', sans-serif;

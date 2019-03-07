@@ -16,6 +16,8 @@ article > section > .container {
     // 데스크탑 사이즈
     max-width:$container-width;
 
+    padding:0 $padding-global;
+
 }
 
 article > section > .container {

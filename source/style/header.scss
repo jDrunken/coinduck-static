@@ -1,0 +1,90 @@
+header {
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:79px;
+
+    z-index:4;
+
+    background: transparent;
+
+    .container {
+        height:inherit;
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+
+        h1 a {
+            display:block;
+            width:176px;
+            height:48px;
+            background: url('/image/logo-coinduck-gnb-wh.svg') center center no-repeat;
+            background-size:cover;
+            @include ir();
+        }
+
+        nav {
+            display:flex;
+            align-items:center;
+
+            a {
+                // margin:0 (70/1391*100%);
+                margin:0 35px;
+
+                color: $white;
+                text-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+                font-size: rem(16);
+                font-weight: bold;
+                text-transform:capitalize;
+            }
+        }
+
+        .locale {
+            a {
+                font-size: rem(16);
+                color: $white;
+                font-weight:700;
+                text-decoration:underline;
+            }
+        }
+    }
+
+}
+
+// transition point
+
+header {
+    transition:background-color 0.2s;
+
+    h1 a {
+        transition:background-image 0.2s;
+
+    }
+    nav a {
+        transition:color 0.2s;
+    }
+}
+
+header.reflection {
+    background: $white;
+
+    h1 a {
+        background: url('/image/logo-coinduck-gnb-r.svg') center center no-repeat;
+        background-size:cover;
+    }
+    .container nav a {
+        font-size: rem(16);
+        font-weight: 500;
+        color: #242424;
+        text-shadow:none;
+    }
+
+    nav a {
+        color: #242424;
+    }
+
+    .locale a {
+        color: #242424;
+    }
+}
