@@ -1,0 +1,72 @@
+#press {
+
+    background-color:$light-gray;
+
+    h2,
+    h3 {
+        text-align:center;
+    }
+
+    ul {
+        $unit:420;
+        $blank:(41/($unit*3)*100%);
+        margin-top:100px;
+        display:flex;
+
+
+        li {
+            background-color: $white;
+            box-sizing:border-box;
+            flex:0 0 $unit;
+            margin-left:$blank;
+
+            border-radius:8px;
+            box-shadow: 0 20px 20px 0 rgba(14, 19, 22, 0.02);
+
+            &:first-child {
+                margin-left:0;
+            }
+        }
+
+        img {
+            max-width:100%;
+        }
+
+        h4 {
+            font-size:rem(18);
+            line-height: 1.67;
+            min-height:(1.67*3);
+        }
+
+        p {
+            font-size:rem(14);
+            line-height: 1.86;
+        }
+
+        div.wrapper {
+            padding:50px 55px;
+        }
+    }
+
+    h4 + p {
+        margin-top:16px;
+    }
+
+    p + p.from {
+        margin-top:27px;
+    }
+
+    // position
+    li {
+        position:relative;
+        max-height:634px;
+    }
+
+    p.from {
+        position:absolute;
+        bottom:50px;
+        img {
+            width:50%;
+        }
+    }
+}

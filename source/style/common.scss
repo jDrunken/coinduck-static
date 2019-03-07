@@ -1,0 +1,75 @@
+.skip-nav {
+    @include screen_reader();
+}
+
+// layout
+// ------------------------------------------------------------
+
+header > .container,
+footer > .container,
+article > section > .container {
+    box-sizing:border-box;
+
+    margin-left:auto;
+    margin-right:auto;
+
+    // 데스크탑 사이즈
+    max-width:$container-width;
+
+}
+
+article > section > .container {
+
+    // 데스크탑 사이즈
+    padding-top:170px;
+    padding-bottom:170px;
+
+}
+
+
+
+// font style
+// ------------------------------------------------------------
+
+article {
+    // base font style
+    font-size: rem(16);
+    font-weight: 500;
+    line-height: 1.63;
+    letter-spacing: -0.2px;
+    color: $font-base;
+
+    h2,
+    h3,
+    h4 {
+        &:first-letter {
+            text-transform: uppercase;
+        }
+    }
+
+    // style
+    h2 {
+        font-size: rem(24);
+        font-weight: bold;
+        color: $red;
+    }
+
+    h3 {
+        font-size: rem(44);
+        font-weight: 800;
+        color:$font-black;
+    }
+
+    h4 {
+        font-size: rem(24);
+        font-weight: 800;
+        line-height: 1;
+        color:$font-black;
+    }
+
+
+    // 기본간격
+    h2 {
+        margin-bottom:9px;
+    }
+}

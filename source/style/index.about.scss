@@ -1,0 +1,33 @@
+#about {
+    .container {
+        text-align:center;
+
+        ul {
+            $width:(280*3+14*2);
+            $unit:(100%/3);
+
+            width:$width;
+            display:flex;
+            justify-content: space-between;
+
+            li {
+                flex:0 0 $unit;
+                max-width:280px;
+            }
+        }
+
+
+        // 여백
+        ul {
+            margin-top:90px;
+        }
+
+        h4 {
+            margin-top:52px;
+        }
+
+        h4 + p {
+            margin-top:16px;
+        }
+    }
+}

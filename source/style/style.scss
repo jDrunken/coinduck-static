@@ -1,0 +1,22 @@
+@charset 'UTF-8';
+
+// 환경설정과 변수, 함수
+@import 'variable.scss';
+@import 'font.scss';
+@import 'env.scss';
+
+// reset
+@import 'base.scss';
+
+// swiper
+@import 'swiper.min.css';
+
+// details
+@import 'common.scss';
+
+@import 'index.summary.scss';
+@import 'index.about.scss';
+@import 'index.press.scss';
+@import 'index.business.scss';
+@import 'index.partners.scss';
+@import 'footer.scss';

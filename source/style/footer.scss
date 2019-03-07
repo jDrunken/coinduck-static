@@ -1,0 +1,49 @@
+footer {
+    background-color: #242424;
+
+
+    padding:90px 0 187px;
+
+    .container {
+        display:flex;
+        justify-content:space-between;
+    }
+
+    h2 {
+
+    }
+
+    address,
+    a {
+        font-size:rem(20);
+        color:#6e6e6e;
+    }
+
+    nav {
+        font-size:0;
+        a {
+            position:relative;
+
+            &:last-child {
+                margin-left:30px;
+
+                &:before {
+                    content:'';
+                    display:block;
+                    position:absolute;
+                    width:1px;
+                    height:18px;
+                    background-color:#474747;
+                    top:50%;
+                    transform:translateY(-50%);
+                    left:-15px;
+                }
+            }
+        }
+    }
+
+    // 여백
+    address {
+        margin-top:29px;
+    }
+}
