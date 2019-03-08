@@ -4,22 +4,28 @@
         max-width:1341px;
     }
     .point {
-        height: 341px;
+        height: (341/1920*100vw);
+        max-height:341px;
         border-radius: 18px;
         box-shadow: 0 20px 50px 0 rgba(0, 0, 0, 0.12);
+
         background-image: linear-gradient(to right, #ff5252, #ff2b2b);
 
         display:flex;
         align-items:center;
         justify-content: space-between;
 
-        padding:0 108px;
+        padding:0 (108/1920*100%);
+
 
         h2 {
             font-size: rem(44);
             font-weight: 800;
             color:$white;
-            text-align:left;
+
+            @include media ('<750px') {
+                font-size:rem(30);
+            }
         }
 
         p {
@@ -28,7 +34,10 @@
             font-weight: 500;
             letter-spacing: 0.5px;
             color: $white;
-            text-align:left;
+
+            @include media ('<750px') {
+                font-size:rem(14);
+            }
         }
 
         .btn-area {
@@ -53,6 +62,61 @@
                 background-color: $white;
                 color:$red;
             }
+
+            @include media ('<450px') {
+                margin-top:40px;
+
+                a.button {
+                    width:100%;
+                    margin:0;
+
+                    &:last-child {
+                        margin-top:15px;
+                    }
+                }
+            }
         }
     }
+
+// responsive
+@include media ('<1180px') {
+    .point {
+        height:auto;
+        max-height:none;
+        display:block;
+        text-align:center;
+        padding:(108/1920*100%) (108/1920*100%);
+    }
+
+    .summary * {
+        text-align:center;
+    }
+
+    .btn-area {
+        margin-top:(108/1920/3*2*100%);
+    }
+}
+
+@include media ('<750px') {
+    .container {
+        padding-left:0;
+        padding-right:0;
+    }
+
+    .point {
+        background:#ff5252;
+        border-radius:0;
+        padding-top:40px;
+        padding-bottom:40px;
+    }
+}
+}
+
+
+@include media ('>550px') {
+
+#point  h2 br {
+    display:none;
+}
+
 }

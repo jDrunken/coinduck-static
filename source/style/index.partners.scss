@@ -1,10 +1,48 @@
 #partners {
-    height:430px;
+    height:(430/1920*100%);
     background-color: #f9fafa;
+
+    .container {
+        box-sizing:border-box;
+
+        padding-top:152px;
+        padding-bottom:152px;
+        @include media ('<460px') {
+            padding-top:40px;
+            padding-bottom:40px;
+        }
+    }
+
+
     ul {
         display:flex;
-        justify-content: space-between;
+        flex-flow:row wrap;
+        justify-content:center;
         align-items:center;
 
+        @include media ('<460px') {
+            flex-direction:column;
+        }
     }
+
+    li {
+        margin:15px (47/1920*100%);
+        @include media ('<460px') {
+            margin:30px 0;
+
+            img {
+               max-width:100%;
+            }
+        }
+    }
+
+    li:first-child {
+        margin-left:0;
+    }
+
+    li:last-child {
+        margin-right:0;
+    }
+
+
 }

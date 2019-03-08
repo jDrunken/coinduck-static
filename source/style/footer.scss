@@ -21,6 +21,7 @@ footer {
 
     nav {
         font-size:0;
+        white-space:nowrap;
         a {
             position:relative;
 
@@ -45,5 +46,37 @@ footer {
     // 여백
     address {
         margin-top:29px;
+    }
+}
+
+@include media ('>458px') {
+
+footer {
+    :lang(en) {
+        br {
+            display:none !important;
+        }
+    }
+}
+
+}
+@include media ('<=768px') {
+    footer {
+        padding-top:60px;
+        padding-bottom:40px;
+
+        .container {
+            display:block;
+        }
+
+        address,
+        a {
+            font-size:rem(12);
+            min-width:160px;
+        }
+
+        nav {
+            margin-top:40px;
+        }
     }
 }

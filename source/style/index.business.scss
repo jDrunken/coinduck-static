@@ -1,6 +1,5 @@
 #business {
     .container {
-        max-width:(280*3+140*2px);
         h2,h3 {
             text-align:center;
         }
@@ -9,14 +8,24 @@
     ul {
         margin-top:90px;
 
-        $unit:280;
+        $unit:(100%/3);
 
         display:flex;
         justify-content: space-between;
 
         li {
-            flex:0 0 $unit+px;
+            flex:0 0 $unit;
             text-align:center;
+            box-sizing:border-box;
+            padding:0 20px;
+
+            &:first-child {
+                padding-left:0;
+            }
+
+            &:last-child {
+                padding-right:0;
+            }
         }
     }
 
@@ -28,5 +37,43 @@
     h4 + p {
         margin-top:16px;
     }
+
+}
+
+@include media ('>550px') {
+
+
+#business .container ul li:first-child br:nth-of-type(1):lang(ko) {
+    display:none;
+}
+
+}
+
+
+
+@include media ('<=768px') {
+
+#business .container ul {
+    display:block;
+    text-align:center;
+    margin-top:0;
+
+    li {
+        margin-top:40px;
+        max-width:none;
+        padding-left:0;
+        padding-right:0;
+    }
+
+    img + h4 {
+        margin-top:20px;
+    }
+
+    img {
+        min-width:170px;
+        width:50%;
+        max-width:280px;
+    }
+}
 
 }

@@ -1,8 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280" viewBox="0 0 280 280">
-    <g fill="none" fill-rule="evenodd">
-        <circle cx="140" cy="140" r="140" fill="#F9FAFB"/>
-        <path fill="#FFF" stroke="#242424" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M118.975 100l12.368 9.908s25.903-6.05 39.993 3.445c14.09 9.495 15.53 23.897 12.094 37.147s-12.644 28.347-12.644 28.347l-12.643.153-1.512-6.335h-19.378l-2.53 6.335h-13.687v-13.775s-8.37-1.725-13.943-4.684c-3.716-1.973-6.81-4.173-9.282-6.6L93 139.5l10.444-4.824c1.476-5.9 3.542-10.273 6.199-13.117 3.986-4.266 7.82-6.697 7.82-6.697L118.975 100z"/>
-        <circle cx="151" cy="105" r="19" fill="#FFF" stroke="#242424" stroke-width="4"/>
-        <circle cx="148.5" cy="107.5" r="14.5" fill="#FF5252" style="mix-blend-mode:multiply"/>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280"><g fill="none" fill-rule="evenodd"><circle cx="140" cy="140" r="140" fill="#F9FAFB"/><g transform="translate(82 84)"><path fill="#FFF" stroke="#242424" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.8" d="M31.057 16.86l14.788 11.932s30.97-7.285 47.818 4.15c16.847 11.434 18.568 28.779 14.46 44.736-4.108 15.957-15.118 34.138-15.118 34.138L77.888 112l-1.808-7.63H52.911L49.887 112H33.52V95.41s-10.008-2.076-16.671-5.64c-4.442-2.376-8.142-5.026-11.098-7.95L0 64.43l12.488-5.81c1.764-7.106 4.234-12.372 7.41-15.797 4.767-5.137 9.351-8.065 9.351-8.065l1.808-17.898z"/><ellipse cx="69.348" cy="22.882" fill="#FFF" stroke="#242424" stroke-width="4.8" rx="22.717" ry="22.882"/><ellipse cx="66.359" cy="25.892" fill="#FF5252" rx="17.337" ry="17.462" style="mix-blend-mode:multiply"/><path stroke="#242424" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.8" d="M73.333 14.452h-5.978c-2.657 0-3.985 1.338-3.985 4.014s1.328 4.014 3.985 4.014h3.986c2.657 0 3.985 1.338 3.985 4.015 0 2.676-1.328 4.014-3.985 4.014h-6.975"/></g></g></svg>

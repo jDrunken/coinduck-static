@@ -1,22 +1,48 @@
 #about {
     .container {
         text-align:center;
-        max-width:(280*3+140*2*1px);
 
-        ul {
-            $width:(280*3+14*2);
-            $unit:(100%/3);
+        @include media ('>768px') {
+            h3:lang(ko) br {
+                display:none;
+            }
 
-            width:$width;
-            display:flex;
-            justify-content: space-between;
-
-            li {
-                flex:0 0 $unit;
-                max-width:280px;
+            h3:lang(en) br[data-type="mobile"] {
+                display:none;
             }
         }
 
+        @include media ('<=768px') {
+            h3:lang(en) br[data-type="desktop"] {
+                display:none;
+            }
+        }
+
+        ul {
+            $unit:(100%/3);
+
+            display:flex;
+            justify-content: space-between;
+            padding:0 20px;
+
+
+            li {
+                flex:0 0 $unit;
+
+                &:first-child {
+                    padding-left:0;
+                    @include media ('>768px') {
+                        &:lang(ko) br {
+                            display:none;
+                        }
+                    }
+                }
+
+                &:last-child {
+                    padding-right:0;
+                }
+            }
+        }
 
         // 여백
         ul {
@@ -29,6 +55,55 @@
 
         h4 + p {
             margin-top:16px;
+        }
+
+        @include media ('>768px') {
+            &:lang(ko) {
+                h4 br {
+                    display:none;
+                }
+            }
+        }
+
+        @include media ('<=768px') {
+            ul {
+                margin-top:40px;
+            }
+
+            li {
+                margin-top:40px;
+
+                &:first-child {
+                    margin-top:0;
+                }
+            }
+
+            h4 {
+                margin-top:20px;
+                line-height:1.42;
+            }
+
+            h4 + p {
+                margin-top:10px;
+            }
+
+        }
+    }
+}
+
+@include media ('<=768px') {
+    #about .container ul {
+        display:block;
+        text-align:center;
+
+        li {
+            max-width:none;
+
+            img {
+                min-width:170px;
+                width:50%;
+                max-width:280px;
+            }
         }
     }
 }

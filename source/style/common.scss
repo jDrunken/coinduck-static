@@ -17,6 +17,10 @@ article > section > .container {
     max-width:$container-width;
 
     padding:0 $padding-global;
+    @include media ('<=768px') {
+        padding-left:20px;
+        padding-right:20px;
+    }
 
 }
 
@@ -26,8 +30,11 @@ article > section > .container {
     padding-top:170px;
     padding-bottom:170px;
 
+    @include media ('<=768px') {
+        padding-top:40px;
+        padding-bottom:40px;
+    }
 }
-
 
 
 // font style
@@ -41,6 +48,10 @@ article {
     letter-spacing: -0.2px;
     color: $font-base;
 
+    @include media ('<=768px') {
+        font-size:rem(14);
+    }
+
     h2,
     h3,
     h4 {
@@ -52,14 +63,31 @@ article {
     // style
     h2 {
         font-size: rem(24);
+
         font-weight: bold;
         color: $red;
+        line-height:1.34;
+
+        @include media ('<=768px') {
+            font-size:rem(14);
+        }
     }
 
     h3 {
         font-size: rem(44);
         font-weight: 800;
         color:$font-black;
+
+        @include media ('<=768px') {
+            line-height:1.36;
+            font-size:rem(22);
+        }
+
+        @include media ('>550px') {
+            &:lang(ko) br {
+                display:none;
+            }
+        }
     }
 
     h4 {
@@ -67,11 +95,14 @@ article {
         font-weight: 800;
         line-height: 1;
         color:$font-black;
-    }
 
+        @include media ('<=768px') {
+            font-size:rem(20);
+        }
+    }
 
     // 기본간격
     h2 {
-        margin-bottom:9px;
+        margin-bottom:14px;
     }
 }
