@@ -9,7 +9,7 @@
     function smoothScrollTo(hash, e) {
         if (hash === '') { return false; } 
 
-        if ($(hash).length > 0) {
+        if ($(hash).length > 0 && !$(hash+'#provision') && !$(hash+'#policy')) {
 
             if(typeof e !== 'undefined') {
                 if ('scrollRestoration' in history) {
@@ -37,7 +37,7 @@
     }
 
     $(function() {
-        $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(e) {
+        $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').not('[href="#provision"]').not('[href="policy"]').click(function(e) {
             $('#header a[href*="#"]').removeClass('viewing');
             $(this).addClass('viewing');
             smoothScrollTo(this.hash, e);
@@ -135,5 +135,86 @@
 // 터치슬라이더 작동
 $("#touchSlider").touchSlider({
 	// Options
-	page: 1
+	page: 1,
+    speed: 500
 });
+
+
+
+// 팝업
+window.addEventListener('hashchange',function (e){
+    if (location.hash === '#provision') {
+        document.querySelector('#provision').classList.add('viewing');
+        bodyScrollLock.disableBodyScroll(document.querySelector('#provision article'));
+    } else if (location.hash === '#policy') {
+        document.querySelector('#policy').classList.add('viewing');
+        bodyScrollLock.disableBodyScroll(document.querySelector('#policy article'));
+    } else {
+        document.querySelector('#policy').classList.remove('viewing');
+        document.querySelector('#provision').classList.remove('viewing');
+        bodyScrollLock.clearAllBodyScrollLocks();
+    }
+});
+
+window.addEventListener('DOMContentLoaded',function (e) {
+    if (location.hash === ('#provision' || '#policy')) {
+        if (document.body.style.overflow === "hidden") {
+            document.body.removeAtrribute('style');
+        }
+    }
+
+    if (location.hash === '#provision') {
+        document.body.style.overflow="hidden";
+        document.querySelector('#provision').classList.add('viewing');
+    } else {
+        document.querySelector('#provision').classList.remove('viewing');
+    }
+    if (location.hash === '#policy') {
+        document.body.style.overflow="hidden";
+        document.querySelector('#policy').classList.add('viewing');
+    } else {
+        document.querySelector('#policy').classList.remove('viewing');
+    }
+});
+
+document.querySelector('#provision .close.popup.button').addEventListener('click',function (){
+    var windowPosition = window.scrollY;
+    event.preventDefault();
+
+    if (location.hash === '#provision') {
+        let target = document.querySelector('#provision')
+        document.querySelector('#provision').classList.remove('viewing');
+        target.addEventListener('transitionend',function viewing (){
+            document.querySelector('#provision article').scroll(0,0)
+            location.hash="";
+
+            var noHashURL = window.location.href.replace(/#.*$/, '');
+            window.history.replaceState('', document.title, noHashURL)
+            window.scrollTo(0,windowPosition);
+
+            target.removeEventListener('transitionend',viewing);
+        })
+    }
+
+});
+
+document.querySelector('#policy .close.popup.button').addEventListener('click',function (){
+    var windowPosition = window.scrollY;
+    event.preventDefault();
+
+    if (location.hash === '#policy') {
+        let target = document.querySelector('#policy')
+        document.querySelector('#policy').classList.remove('viewing');
+        target.addEventListener('transitionend',function viewing (){
+            document.querySelector('#policy article').scroll(0,0)
+            location.hash="";
+
+            var noHashURL = window.location.href.replace(/#.*$/, '');
+            window.history.replaceState('', document.title, noHashURL)
+            window.scrollTo(0,windowPosition);
+
+            target.removeEventListener('transitionend',viewing);
+        })
+    }
+});
+

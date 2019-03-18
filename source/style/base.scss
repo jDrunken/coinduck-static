@@ -20,7 +20,7 @@ body {
     font-family:sans-serif;
     transition-timing-function: cubic-bezier(.11,.89,.31,.99);
     transition: background-color 0.8s;
-
+    touch-action: manipulation;
 
     :lang(en) {
         font-family:$font-family-en;

@@ -71,7 +71,33 @@ header {
                 }
                 color: $white;
                 font-weight:700;
-                text-decoration:underline;
+
+                padding-left:30px;
+
+                line-height:1.12;
+                position:relative;
+                display:block;
+
+                &:before {
+                    content:'';
+                    position:absolute;
+                    left:0;
+                    top:50%;
+                    margin-top:-12px;
+                    width:22px;
+                    height:22px;
+                    background-repeat:no-repeat;
+                    background-position:center center;
+                    background-size:cover;
+                }
+
+                &:lang(ko):before {
+                    background-image:url('/image/img-kor@2x.png');
+                }
+
+                &:lang(en):before {
+                    background-image:url('/image/img-eng@2x.png');
+                }
             }
         }
     }
