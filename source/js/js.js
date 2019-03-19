@@ -184,7 +184,7 @@ document.querySelector('#provision .close.popup.button').addEventListener('click
     if (location.hash === '#provision') {
         let target = document.querySelector('#provision')
         document.querySelector('#provision').classList.remove('viewing');
-        target.addEventListener('transitionend',function viewing (){
+        // target.addEventListener('transitionend',function viewing (){
             document.querySelector('#provision article').scroll(0,0)
             location.hash="";
 
@@ -192,8 +192,8 @@ document.querySelector('#provision .close.popup.button').addEventListener('click
             window.history.replaceState('', document.title, noHashURL)
             window.scrollTo(0,windowPosition);
 
-            target.removeEventListener('transitionend',viewing);
-        })
+            // target.removeEventListener('transitionend',viewing);
+        // })
     }
 
 });
@@ -205,7 +205,7 @@ document.querySelector('#policy .close.popup.button').addEventListener('click',f
     if (location.hash === '#policy') {
         let target = document.querySelector('#policy')
         document.querySelector('#policy').classList.remove('viewing');
-        target.addEventListener('transitionend',function viewing (){
+        // target.addEventListener('transitionend',function viewing (){
             document.querySelector('#policy article').scroll(0,0)
             location.hash="";
 
@@ -213,8 +213,7 @@ document.querySelector('#policy .close.popup.button').addEventListener('click',f
             window.history.replaceState('', document.title, noHashURL)
             window.scrollTo(0,windowPosition);
 
-            target.removeEventListener('transitionend',viewing);
-        })
+            // target.removeEventListener('transitionend',viewing);
+        // })
     }
 });
-

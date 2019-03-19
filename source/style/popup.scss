@@ -263,20 +263,20 @@ $min-height:940px;
 
 .popup.layer:target {
     display:block;
-    background-color:rgba($black,0);
-    transition:background-color 0.5s;
+    // background-color:rgba($black,0);
+    // transition:background-color 0.5s;
 
-    .background {
-        transition:transform 0.5s 0.2s;
-        transform:translate(-50%,-200%);
-    }
+    // .background {
+    //     transition:transform 0.5s 0.2s;
+    //     transform:translate(-50%,-200%);
+    // }
 
 }
 
-.popup.layer.viewing {
-    background-color:rgba($black,0.2);
+// .popup.layer.viewing {
+//     background-color:rgba($black,0.2);
 
-    .background {
-        transform:translate(-50%,-50%);
-    }
-}
+//     .background {
+//         transform:translate(-50%,-50%);
+//     }
+// }
