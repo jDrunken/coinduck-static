@@ -107,5 +107,54 @@
                 max-width:280px;
             }
         }
+
+        @include media ('>768px') {
+            &:lang(ko) {
+                h4 br {
+                    display:none;
+                }
+            }
+        }
+
+        @include media ('<=768px') {
+            ul {
+                margin-top:40px;
+            }
+
+            li {
+                margin-top:40px;
+
+                &:first-child {
+                    margin-top:0;
+                }
+            }
+
+            h4 {
+                margin-top:20px;
+                line-height:1.42;
+            }
+
+            h4 + p {
+                margin-top:10px;
+            }
+
+        }
+    }
+}
+
+@include media ('<=768px') {
+    #about .container ul {
+        display:block;
+        text-align:center;
+
+        li {
+            max-width:none;
+
+            img {
+                min-width:170px;
+                width:50%;
+                max-width:280px;
+            }
+        }
     }
 }
