@@ -1,32 +1,104 @@
 #business {
     .container {
-        max-width:(280*3+140*2px);
+        max-width:1308px;
         h2,h3 {
             text-align:center;
+        }
+
+        @include media ('>768px') {
+            h3 br {
+                display:none;
+            }
         }
     }
 
     ul {
         margin-top:90px;
 
-        $unit:280;
+        $unit:(100%/3);
 
         display:flex;
         justify-content: space-between;
 
         li {
-            flex:0 0 $unit+px;
+            flex:0 0 $unit;
             text-align:center;
+            box-sizing:border-box;
+            padding:0 20px;
+
+            &:first-child {
+                padding-left:0;
+            }
+
+            &:last-child {
+                padding-right:0;
+            }
         }
     }
 
     // 여백
     img + h4 {
-        margin-top:52px;
+        margin-top:44px;
     }
 
     h4 + p {
-        margin-top:16px;
+        margin-top:25px;
     }
 
+}
+
+@include media ('>550px') {
+
+
+#business .container ul li:first-child br:nth-of-type(1):lang(ko) {
+    display:none;
+}
+
+}
+
+
+
+@include media ('<=768px') {
+
+#business .container ul {
+    display:block;
+    text-align:center;
+    margin-top:0;
+
+    li {
+        margin-top:28px;
+        max-width:none;
+        padding-left:0;
+        padding-right:0;
+    }
+
+    img + h4 {
+        margin-top:-9px;
+    }
+
+    h4 + p {
+        margin-top:3px;
+        line-height:1.5;
+    }
+    img {
+        min-width:170px;
+        width:50%;
+        max-width:280px;
+    }
+}
+
+}
+
+
+// 개별 문단에 대한 대응을 별도로 처리한다.
+html:lang(ko) {
+    #business ul li {
+        p {
+            word-break:keep-all;
+        }
+
+        &:nth-of-type(1) p {
+            letter-spacing: -0.7px;
+        }
+    }
 }

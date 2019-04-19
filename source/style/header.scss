@@ -5,9 +5,17 @@ header {
     right:0;
     height:79px;
 
-    z-index:4;
+    @include media ('<=768px') {
+        height:56px;
+    }
+
+    z-index:20;
 
     background: transparent;
+    transition:background 0.2s;
+    // @include media ('<=768px') {
+    //     transition:none;
+    // }
 
     .container {
         height:inherit;
@@ -15,13 +23,25 @@ header {
         align-items:center;
         justify-content: space-between;
 
+        @include media ('<=768px') {
+            padding-left:12px;
+        }
+
         h1 a {
+
             display:block;
             width:176px;
             height:48px;
-            background: url('/image/logo-coinduck-gnb-wh.svg') center center no-repeat;
-            background-size:cover;
+
+            background: url('/image/logo-coinduck-gnb-wh@2x.png') center center no-repeat;
+            background-size:auto 48px;
             @include ir();
+
+            @include media ('<=768px') {
+                width:118px;
+                height:32px;
+                background-size:auto 32px;
+            }
         }
 
         nav {
@@ -30,53 +50,84 @@ header {
 
             a {
                 // margin:0 (70/1391*100%);
-                margin:0 35px;
+                margin:0 38px;
 
                 color: $white;
                 text-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
                 font-size: rem(16);
                 font-weight: bold;
                 text-transform:capitalize;
+
+                &:first-child {
+                    margin-left:0;
+                }
+
+                &:last-child {
+                    margin-right:0;
+                }
             }
         }
 
         .locale {
             a {
                 font-size: rem(16);
+                @include media ('<=768px') {
+                    font-size: rem(12);
+                }
                 color: $white;
                 font-weight:700;
-                text-decoration:underline;
+
+                padding-left:30px;
+                @include media ('<=768px') {
+                    padding-left:22px;
+                }
+
+                line-height:1.12;
+                position:relative;
+                display:block;
+
+                &:before {
+                    content:'';
+                    position:absolute;
+                    left:0;
+                    top:50%;
+                    margin-top:-12px;
+                    width:22px;
+                    height:22px;
+
+                    background-repeat:no-repeat;
+                    background-position:center center;
+                    background-size:cover;
+
+                    @include media ('<=768px') {
+                        margin-top:-8px;
+                        width:15px;
+                        height:15px;
+                    }
+                }
+
+                &:lang(ko):before {
+                    background-image:url('/image/img-kor@2x.png');
+                }
+
+                &:lang(en):before {
+                    background-image:url('/image/img-eng@2x.png');
+                }
             }
         }
     }
 
 }
 
-// transition point
-
-header {
-    transition:background-color 0.2s;
-
-    h1 a {
-        transition:background-image 0.2s;
-
-    }
-    nav a {
-        transition:color 0.2s;
-    }
-}
-
 header.reflection {
     background: $white;
+    border-bottom:1px solid #eeeeee;
 
     h1 a {
-        background: url('/image/logo-coinduck-gnb-r.svg') center center no-repeat;
+        background: url('/image/logo-coinduck-gnb-r@2x.png') center center no-repeat;
         background-size:cover;
     }
     .container nav a {
-        font-size: rem(16);
-        font-weight: 500;
-        color: #242424;
         text-shadow:none;
     }
 
@@ -87,4 +138,38 @@ header.reflection {
     .locale a {
         color: #242424;
     }
+}
+
+
+// layout
+header {
+    h1 {
+        margin-left:4px;
+        margin-right:85px;
+    }
+
+    nav {
+    }
+
+    .locale {
+        margin-right:10px;
+    }
+}
+
+
+// responsive
+@include media ('<=800px') {
+
+header {
+    .container {
+        nav {
+            display:none;
+        }
+    }
+
+    .locale {
+        margin-right:0;
+    }
+}
+
 }

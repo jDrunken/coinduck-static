@@ -1,10 +1,11 @@
 #summary {
-    height:920px;
+
     margin:0;
 
-    div.title {
+    .title {
 
-        $unit:549;
+        $unit:650;
+        // $unit:669;
         // width:($unit/1920*100%);
         max-width:($unit*1px);
 
@@ -16,28 +17,52 @@
             text-align: right;
             color: $white;
 
+            @include media ('<=768px') {
+                font-size: rem(22);
+            }
+
+            span {
+                font-size:rem(50);
+                vertical-align:5px;
+                margin-top:-12px;
+                display:inline-block;
+                line-height:1.2;
+                @include media ('<=768px') {
+                    font-size: rem(20);
+                    vertical-align:2px;
+                }
+            }
         }
 
         p {
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             font-size: rem(21);
+            @include media ('<=768px') {
+                font-size: rem(12);
+            }
             font-weight: bold;
-            line-height: 1.52;
+            line-height: 1.59;
             text-align: right;
             color: $white;
+
+            @include media ('>768px') {
+                &:lang(en) br:last-child {
+                    display:none;
+                }
+            }
         }
 
         h2 + p {
             margin-top:35px;
+            @include media ('<=768px') {
+                margin-top:10px;
+            }
+
         }
     }
 
     // position:desktop
     position:relative;
-
-    div.title {
-        padding-top:337px;
-    }
 }
 
 #summary::selection,
@@ -48,33 +73,389 @@
 
 // interaction
 #summary {
-    position:relative;
+    height:920px;
 
-    .bg.wrapper {
+    @include media ('<=768px') {
+        height:498px;
+    }
+
+    #touchSlider {
+        position:relative;
+        overflow:hidden;
+        height:inherit;
+
+        div.background.image {
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+
+            > div {
+                position:absolute;
+                top:0;
+                left:0;
+                right:0;
+                bottom:0;
+
+                height:inherit;
+                background-size:cover;
+                background-position:center 90%;
+                background-repeat:no-repeat;
+
+                height:920px;
+
+                @include media ('<=768px') {
+                    height:100vh;
+                    max-height:700px;
+                }
+
+
+                z-index:1;
+
+                &:nth-of-type(1) {
+                    background-image: url('/image/img-bg-01.jpg');
+
+                    @include media ('<=768px') {
+                    }
+                }
+
+                &:nth-of-type(2) {
+                    background-image:url('/image/img-bg-02.jpg');
+                }
+
+                &:nth-of-type(3) {
+                    background-image:url('/image/img-bg-03.jpg');
+                    background-position:93% 20%;
+                    @include media ('<=768px') {
+                        &:before {
+                            content:'';
+                            position:absolute;
+                            top:0;
+                            bottom:0;
+                            left:0;
+                            right:0;
+                            background-color: rgba(80, 67, 51, 0.35);
+                        }
+                    }
+                }
+                &:nth-of-type(4) {
+                    background-image:url('/image/img-bg-04.jpg');
+                    background-position:35% bottom;
+                }
+            }
+        }
+    }
+
+    #touchSlider .background.image > div.hiding {
+        z-index:2;
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1)
+    }
+
+    #touchSlider .background.image > div.viewing {
+        z-index:4;
+        opacity:1;
+        animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    #touchSlider .background.image > div.prev {
+        animation:viewingBgPrev 1.3s;
+        @include media ('<=768px') {
+            animation:viewingBgPrev 0.65s;
+        }
+
+    }
+
+    #touchSlider .background.image > div.next {
+        animation:viewingBgNext 1.3s;
+        @include media ('<=768px') {
+            animation:viewingBgNext 0.65s;
+        }
+    }
+
+    // 보여지는 인터랙션
+    @keyframes viewingBgPrev {
+        0% {
+            opacity:0;
+            transform:translate3d(-(200/1920*100vw),0,0)
+        }
+
+        31% {
+            opacity:0;
+            transform:translate3d(-(200/1920*100vw),0,0)
+        }
+
+        100% {
+            opacity:1;
+            transform:translate3d(0px,0,0)
+        }
+    }
+
+    @keyframes viewingBgNext {
+        0% {
+            opacity:0;
+            transform:translate3d(-(200/1920*100vw),0,0)
+        }
+
+        31% {
+            opacity:0;
+            transform:translate3d((200/1920*100vw),0,0)
+        }
+
+        100% {
+            opacity:1;
+            transform:translate3d(0px,0,0)
+        }
+    }
+
+    #touchSlider .title.wrapper {
         position:absolute;
-        top:0;
-        left:0;
-        right:0;
-        bottom:0;
-        z-index:-1;
+        height:(128+35+96px);
+        top:337px;
+        right:calc(50% + 57px);
+        width:100%;
+        max-width:600px;
+        z-index:8;
 
-        > div {
+        @include media ('<=768px') {
+            max-width:none;
+            position:relative;
+            top:0;
+            right:auto;
+            bottom:0;
+            height:498px;
+            * {
+                text-align:center !important;
+            }
+        }
+
+        div {
+            position:absolute;
+            right:0;
+            top:0;
+
+            @include media ('<=768px') {
+                top:auto;
+                height:130px;
+
+                left:0;
+                top:50px;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+            }
+
+            h2,p {
+                opacity:0;
+            }
+
+            h2 {
+                transition:opacity 0.7s 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+                @include media ('<=768px') {
+                    transition:opacity 0.35s cubic-bezier(0.645, 0.045, 0.355, 1);
+                }
+
+            }
+
+            p {
+                transition:opacity 0.6s 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+                @include media ('<=768px') {
+                    transition:opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+                }
+            }
+        }
+
+        div.hiding {
+            h2,p {
+                opacity:0;
+            }
+        }
+
+        div.viewing {
+            h2,p {
+                opacity:1
+            }
+
+            h2 {
+                transition:opacity 0.7s 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+                @include media ('<=768px') {
+                    transition:opacity 0.35s cubic-bezier(0.645, 0.045, 0.355, 1);
+                }
+            }
+
+            p {
+                transition:opacity 0.6s 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+                @include media ('<=768px') {
+                    transition:opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+                }
+            }
+        }
+    }
+
+    #touchSlider .phone.image.wrapper {
+        font-size:0;
+        position:absolute;
+        z-index:7;
+        bottom:0;
+        $unit:(52/1920*100%);
+        left:calc(50% + #{$unit});
+        width:605px;
+        height:708px;
+
+        @include media ('<=768px') {
+            width:320px;
+            height:298px;
+            overflow:hidden;
+
+            left:50%;
+            transform:translateX(-50%);
+            top:215px;
+
+            img {
+                max-width:100%;
+            }
+
+            &:before {
+                content:'';
+                display:block;
+                position:absolute;
+                left:0;
+                right:0;
+                bottom:0;
+                height:40px;
+                background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.05));
+                z-index:7;
+            }
+        }
+
+        img {
+            position:absolute;
+
+            opacity:0;
+            transition:opacity 0.9s 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+            @include media ('<=768px') {
+                transition:opacity 0.45s cubic-bezier(0.645, 0.045, 0.355, 1);
+            }
+            max-width:605px;
+
+            &.viewing {
+                z-index:4;
+                opacity:1;
+            }
+
+            &.hiding {
+                z-index:2;
+            }
+
+            @include media ('<=768px') {
+                max-width:100%;
+            }
+        }
+
+
+    }
+
+    @include media ('<=768px') {
+        .ts-controls {
+            position:absolute;
+            bottom:312px;
+            left:50%;
+            width:56px;
+            transform:translateX(-50%);
+            z-index:12;
+        }
+    }
+    // pagination button
+    .ts-paging {
+        position:absolute;
+        bottom:49px;
+        right:calc(50% + 56px);
+        z-index:12;
+
+        @include media ('<=768px') {
+            right:auto;
+            bottom:auto;
+            left:0;
+            right:0;
+        }
+
+        button.ts-paging-btn {
+            @include ir();
+            margin:0 10px;
+            border-radius:100%;
+            width:10px;
+            height:10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            transition:background-color 1.3s;
+
+            &:first-child {
+                margin-left:0;
+            }
+
+            &:last-child {
+                margin-right:0;
+            }
+
+            &.ts-paging-active {
+                background-color: rgba(255, 255, 255, 1);
+            }
+
+            @include media ('<=768px') {
+                width:5px;
+                height:5px;
+                margin:0 6px;
+                transition:background-color 0.5s;
+            }
+        }
+    }
+
+
+    .ts-controls > button {
+        width:104px;
+        height:104px;
+        @include ir();
+        position:absolute;
+        top:50%;
+        margin-top:-16px;
+        transition:transform 0.2s;
+        z-index:12;
+
+        @include media ('<=768px') {
+            display:none;
+        }
+    }
+
+
+    .ts-prev {
+        background:url('/image/ic-arrow-l.svg') center center no-repeat;
+        left:40px;
+
+        &:active {
+            transform:translateX(-2%) scale(0.98);
+        }
+    }
+
+    .ts-next {
+        background:url('/image/ic-arrow-r.svg') center center no-repeat;
+        right:40px;
+
+        &:active {
+            transform:translateX(-2%) scale(0.98);
+        }
+    }
+}
+
+@include media ('<=768px') {
+    #summary {
+        position:relative;
+        &:after {
+            content:'';
             position:absolute;
             top:0;
             left:0;
             right:0;
             bottom:0;
         }
-
-        .slide1:nth-of-type(1) {
-            background:url('/image/img-bg-01.jpg');
-        }
-    }
-
-    .image.wrapper {
-        font-size:0;
-        position:absolute;
-        bottom:0;
-        left:calc(50% + 52px);
     }
 }

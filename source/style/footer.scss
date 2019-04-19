@@ -1,26 +1,30 @@
 footer {
     background-color: #242424;
-
-
-    padding:90px 0 187px;
+    padding:87px 0 187px;
 
     .container {
+        max-width:$container-width-wide;
         display:flex;
         justify-content:space-between;
     }
 
-    h2 {
-
-    }
-
     address,
     a {
-        font-size:rem(20);
+        &:lang(en) {
+            font-family:$font-family-roboto;
+        }
+        &:lang(ko) {
+            font-family:$font-family-ko-only;
+        }
+        font-size:rem(16);
         color:#6e6e6e;
     }
 
     nav {
+        margin-top:-4px;
+        margin-right:3px;
         font-size:0;
+        white-space:nowrap;
         a {
             position:relative;
 
@@ -32,7 +36,7 @@ footer {
                     display:block;
                     position:absolute;
                     width:1px;
-                    height:18px;
+                    height:15px;
                     background-color:#474747;
                     top:50%;
                     transform:translateY(-50%);
@@ -45,5 +49,54 @@ footer {
     // 여백
     address {
         margin-top:29px;
+    }
+}
+
+@include media ('>458px') {
+
+footer {
+    :lang(en) {
+        br {
+            display:none !important;
+        }
+    }
+}
+
+}
+@include media ('<=768px') {
+    footer {
+        padding-top:50px;
+        padding-bottom:40px;
+
+        .container {
+            display:block;
+        }
+
+        h2 img {
+            width:81px;
+        }
+
+        address,
+        a {
+            font-size:rem(12);
+            min-width:160px;
+        }
+
+        address {
+            margin-top:14px;
+            margin-bottom:-3px;
+        }
+
+        nav {
+            margin-top:40px;
+
+            a:last-child {
+                margin-left:20px;
+                &:before {
+                    height:10px;
+                    left:-10px;
+                }
+            }
+        }
     }
 }

@@ -2,58 +2,38 @@
 <html lang="<!--@@var = lang-->">
 <head>
     <meta charset="UTF-8">
-    <title>Coindudk</title>
+    <title>Coinduck</title>
 
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta property="og:locale" content="ko_KR" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="코인덕 (Coinduck) | 대한민국 1등 암호화폐 환전, 결제, 송금 서비스" />
-    <meta property="og:description" content="&#039;나만의 링크&#039; 하나로 암호화폐 환전, 결제, 송금까지 모두 해결하세요! 3분만에 만드는 나만의 블록체인 페이 플랫폼" />
-    <meta property="og:url" content="https://coinduck.me/" />
-    <meta property="og:site_name" content="Coinduck" />
-
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <meta property="og:image" content="">
-    <meta property="og:url" content="">
-
-    <meta name="twitter:card" content="">
-    <meta name="twitter:site" content="">
-    <meta name="twitter:title" content="">
-    <meta name="twitter:description" content="">
-    <meta name="twitter:image" content="">
+    <!-- @@placeholder = head -->
 
     <!-- favicon set -->
-    <link rel="shortcut icon" href="">
-    <link rel="icon" href="" sizes="32x32">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../image/coinduck.favicon.ico" sizes="32x32">
+    <meta property="og:image" content="https://coinduck.kr/image/opengraph.png" />
+    <meta property="og:image:secure_url" content="https://coinduck.kr/opengraph.png" />
 
-    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="">
 
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 <body>
 
+    <div id="barrior" class="barrior">&nbsp;</div>
     <!-- skip navigation -->
     <div class="skip-nav">
         <a href="#content">Go To Contents</a>
 	</div>
 
-    <header id="header">
+    <header id="header" class="reflection">
         <div class="container">
             <h1><a href="/" class="menu">COINDUCK</a></h1>
             <nav>
-                <a href="#about">About</a>
-                <a href="#press">Press</a>
-                <a href="#business">Business</a>
-                <a href="#partners">partners</a>
+            <!-- @@placeholder = link -->
             </nav>
+
             <div class="locale">
-                <a href="/en/">English</a>
-                <a href="/en/">Korean</a>
+            <!--@@placeholder = locale-->
             </div>
         </div>
     </header>
@@ -61,8 +41,13 @@
     <article id="contents">
         <section id="summary">
             <!--@@placeholder = summary-->
+            <div class="ts-controls">
+                <div class="ts-paging">
+                </div>
+                <button type="button" class="ts-prev">Prev</button>
+                <button type="button" class="ts-next">Next</button>
+            </div>
         </section>
-
         <section id="about">
             <div class="container about">
             <!--@@placeholder = about-->
@@ -96,27 +81,33 @@
 
     <footer>
         <div class="container">
-            <div class="info">
-                <h2>
-                    <img src="/image/logo-coinduck-footer-wh.svg" alt="COINDUCK">
-                </h2>
-                <address>302, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea</address>
-                <a href="mailto:coinduck@chainpartners.net" class="contact">coinduck@chainpartners.net</a>
-            </div>
-            <nav>
-                <a href="#">Term of Use</a>
-                <a href="#">Privacy Policy</a>
-            </nav>
+        <!-- @@placeholder = footer -->
         </div>
     </footer>
 
-	<!-- jquery cdn -->
-    <script src="./js/jquery.min.js"></script>
-    <script src="./js/TweenLite.js"></script>
-    <script src="./js/CSSPlugin.js"></script>
-    <script src="./js/EasePack.js"></script>
-    <script src="./js/swiper.min.js"></script>
-    <script src="./js/bodymovin.js"></script>
-	<script src="./js/js.js"></script>
+    <div id="provision" class="popup layer" tabindex="-1">
+        <div class="background">
+            <div class="container">
+                <!-- @@placeholder = provision -->
+            </div>
+            <button type="button" class="close popup button">닫기</button>
+        </div>
+    </div>
+
+
+    <div id="policy" class="popup layer" tabindex="-1">
+        <div class="background">
+            <div class="container">
+                <!-- @@placeholder = policy -->
+            </div>
+            <button type="button" class="close popup button">닫기</button>
+        </div>
+    </div>
+
+    <!-- jquery cdn -->
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/body.scroll.lock.js"></script>
+    <script src="../js/aos.js"></script>
+    <script src="../js/js.js"></script>
 </body>
 </html>

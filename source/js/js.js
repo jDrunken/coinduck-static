@@ -9,7 +9,7 @@
     function smoothScrollTo(hash, e) {
         if (hash === '') { return false; } 
 
-        if ($(hash).length > 0) {
+        if ($(hash).length > 0 && (!($(hash)[0].id === 'policy') && !($(hash)[0].id === 'provision'))) {
 
             if(typeof e !== 'undefined') {
                 if ('scrollRestoration' in history) {
@@ -37,7 +37,7 @@
     }
 
     $(function() {
-        $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(e) {
+        $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').not('[href="#provision"]').not('[href="#policy"]').click(function(e) {
             $('#header a[href*="#"]').removeClass('viewing');
             $(this).addClass('viewing');
             smoothScrollTo(this.hash, e);
@@ -103,717 +103,413 @@
 (function ($) {
     $('body').addClass('loading');
     $(window).on('load',function () {
-        $('#barrior').addClass('remove').on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+        setTimeout(function (){
+            $('#barrior').addClass('remove').on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 
-            // modal block 삭제
-            $('body').removeClass('loading').addClass('animate');
-            document.getElementById('barrior').outerHTML = '';
+                // modal block 삭제
+                $('body').removeClass('loading').addClass('animate').on('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function () {
+                    $('body').removeAttr('class');
+                });
+                document.getElementById('barrior').outerHTML = '';
 
-            // body의 class 삭제
-        });
+                // body의 class 삭제
+            });
+        },500)
     });
 })(jQuery);
 
 
 
-
-
-
 // 스크롤 시작되면 header에 이벤트 부착
-
 (function ($) {
+    function setHeaderStyleReflection () {
+        var isScrolled = parseInt($(window).scrollTop());
+        var isOpenPopup = (localStorage.getItem('isOpenPopup') === 'opened');
+        isScrolled > 0 ? document.querySelector('header').classList.add('reflection') : document.querySelector('header').classList.remove('reflection')
+        if (isOpenPopup) {
+            document.querySelector('header').classList.add('reflection')
+        }
+
+    }
+
+    window.addEventListener('DOMContentLoaded',function (){
+        setHeaderStyleReflection();
+    })
     window.addEventListener('scroll',function (){
-        
-        let isScrolled = document.documentElement.scrollTop > 0
-
-        !!isScrolled ? document.querySelector('header').classList.add('reflection') : document.querySelector('header').classList.remove('reflection')
-
+        setHeaderStyleReflection();
     });
+})(jQuery);
+
+
+
+// 팝업
+function popupHandling () {
+    if (location.hash === '#provision') {
+        document.querySelector('#provision').classList.add('viewing');
+        bodyScrollLock.disableBodyScroll(document.querySelector('#provision article'));
+    } else if (location.hash === '#policy') {
+        document.querySelector('#policy').classList.add('viewing');
+        bodyScrollLock.disableBodyScroll(document.querySelector('#policy article'));
+    } else {
+        bodyScrollLock.clearAllBodyScrollLocks();
+        document.querySelector('#policy').classList.remove('viewing');
+        document.querySelector('#provision').classList.remove('viewing');
+    }
+}
+
+// hash가 change되거나 페이지 로딩시 popup의 hash가 걸려있을때
+window.addEventListener('hashchange',function (e){
+    popupHandling();
+});
+
+
+
+window.addEventListener('DOMContentLoaded',function (e) {
+    popupHandling();
+});
+
+
+
+document.querySelector('#provision .close.popup.button').addEventListener('click',function (){
+    var windowPosition = window.scrollY;
+    event.preventDefault();
+
+    if (location.hash === '#provision') {
+        bodyScrollLock.clearAllBodyScrollLocks();
+        document.querySelector('#provision').classList.remove('viewing');
+        document.querySelector('#provision article').scroll(0,0)
+        location.hash="";
+
+        var noHashURL = window.location.href.replace(/#.*$/, '');
+        window.history.replaceState('', document.title, noHashURL)
+        window.scrollTo(0,windowPosition);
+    }
+});
+
+document.querySelector('#policy .close.popup.button').addEventListener('click',function (){
+    var windowPosition = window.scrollY;
+    event.preventDefault();
+
+    if (location.hash === '#policy') {
+        bodyScrollLock.clearAllBodyScrollLocks();
+        document.querySelector('#policy').classList.remove('viewing');
+        document.querySelector('#policy article').scroll(0,0)
+        location.hash="";
+
+
+        var noHashURL = window.location.href.replace(/#.*$/, '');
+        window.history.replaceState('', document.title, noHashURL)
+        window.scrollTo(0,windowPosition);
+    }
+});
+
+
+
+
+// rolling interaction
+(function ($){
+    // 롤링할 대상을 받아온다.
+    var item = document.querySelector('#touchSlider').dataset.max;
+    var order = {
+        before : 0,
+        now : 0
+    };
+
+    // order에 따라서 attribute를 바인딩을 해줘야지?
+    function setDataInteraction (direction,direct) {
+        if (!direct) {
+            if (direction === 'next') {
+                order.before = parseInt(order.now);
+                order.now++;
+                if (order.now > item) {
+                    order.now = 0;
+                }
+            } else if (direction === 'prev') {
+                order.before = parseInt(order.now);
+                order.now--;
+                if (order.now < 0) {
+                    order.now = item;
+                }
+            } else {
+                return;
+            }
+        }
+
+        var controller = document.querySelector('#touchSlider');
+
+        // 배경이미지
+        // ------------------------------------------------------------
+        $('#touchSlider div.prev').removeClass('prev');
+        $('#touchSlider div.next').removeClass('next');
+
+        $('#touchSlider .background.image div:eq('+order.before+')').removeClass('viewing');
+        $('#touchSlider .background.image div:eq('+order.before+')').addClass('hiding');
+        $('#touchSlider .background.image div:eq('+order.now+')').on('animationend',function (){
+            $('#touchSlider .background.image div:eq('+order.before+')').removeAttr('class');
+        });
+
+        if (direction === 'prev') {
+            $('#touchSlider .background.image > div:eq('+order.now+')').addClass('prev').addClass('viewing');
+        } else if (direction === 'next') {
+            $('#touchSlider .background.image > div:eq('+order.now+')').addClass('next').addClass('viewing');
+        }
+
+
+        // 타이틀 텍스트
+        // ------------------------------------------------------------
+        $('#touchSlider div.title.wrapper > div:eq('+order.before+')').removeClass('viewing');
+        setTimeout(function (){
+            $('#touchSlider div.title.wrapper > div:eq('+order.now+')').addClass('viewing');
+        },200);
+
+
+        // phone mockup
+        // ------------------------------------------------------------
+        $('#touchSlider div.phone.image.wrapper > img:eq('+order.now+')').addClass('viewing');
+        $('#touchSlider div.phone.image.wrapper > img:eq('+order.before+')').addClass('hiding');
+        $('#touchSlider div.phone.image.wrapper > img:eq('+order.now+')').on('transitionend',function () {
+            $('#touchSlider div.phone.image.wrapper > img:eq('+order.before+')').removeAttr('class');
+        })
+
+        // navigate button binding
+        // ------------------------------------------------------------
+        $('button.ts-paging-btn:eq('+order.before+')').removeClass('ts-paging-active');
+        $('button.ts-paging-btn:eq('+order.now+')').addClass('ts-paging-active');
+    }
+
+    // initialize
+    // 페이지네이션 바인딩
+    (function (itemCount){
+        var dom = '';
+        for (var i=0; i<=itemCount; i++) {
+            if (i === 0) {
+                dom += '<button type="button" class="ts-paging-btn ts-paging-active" data-index="'+parseInt(i)+'">page'+parseInt(i+1)+'</button>'
+            } else {
+                dom += '<button type="button" class="ts-paging-btn" data-index="'+parseInt(i)+'">page'+parseInt(i+1)+'</button>'
+            }
+        }
+        // binding
+        document.querySelector('.ts-paging').innerHTML = dom;
+    })(item);
+
+    // 버튼에 이벤트 바인딩
+    $('button.ts-paging-btn').on('click',function (){
+        order.before = parseInt(order.now);
+        order.now = $(this).data().index;
+
+        $(this).attr('disabled','disabled');
+
+        var interval = (function (){
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+                return 700
+            } else {
+                return 1300
+            }
+        })();
+
+        // arrow function이 안될수도 있으므로.
+        (function ($this) {
+            setTimeout(function () {
+                $this.removeAttr('disabled');
+            },interval);
+        })($(this))
+
+        if (order.before > order.now) {
+            setDataInteraction('prev','direct');
+        } else if (order.before < order.now) {
+            setDataInteraction('next','direct');
+        } else {
+            return;
+        }
+    });
+
+    // 왼쪽 오른쪽 화살표는 항상 노출되어 있다. html안에 static하게 생성하는 것으로 처리
+    // 화살표의 dom을 받아온다.
+    var arrow = {
+        left : document.querySelector('.ts-prev'),
+        right : document.querySelector('.ts-next')
+    };
+
+    arrow.left.addEventListener('click',function (e){
+        setDataInteraction('prev');
+        arrow.left.setAttribute('disabled','disabled')
+        arrow.right.setAttribute('disabled','disabled')
+        setTimeout(function (){
+            arrow.left.removeAttribute('disabled')
+            arrow.right.setAttribute('disabled')
+        },1300)
+    });
+
+    arrow.right.addEventListener('click',function (e){
+        setDataInteraction('next');
+        arrow.left.setAttribute('disabled','disabled')
+        arrow.right.setAttribute('disabled','disabled')
+        setTimeout(function (){
+            arrow.left.removeAttribute('disabled');
+            arrow.right.removeAttribute('disabled');
+        },1300)
+    });
+
+    // 데스크탑에서 7초마다 롤링시킨다.
+    if( !/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+        var rolling;
+
+        rolling = setInterval(function () {
+            setDataInteraction('next')
+        },7000)
+
+        // 마우스가 올라가면 중지시킨다.
+        $('#summary').on('mouseenter',function () {
+            clearInterval(rolling);
+        });
+
+        $('#summary').on('mouseleave',function () {
+            rolling = setInterval(function () {
+                setDataInteraction('next')
+            },7000)
+        });
+    }
+
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+        var bStartEvent = false; //touchstart 이벤트 발생 여부 플래그
+        var nMoveType = {
+            axis : -1, //현재 판단된 사용자 움직임의 방향
+            direction : ''
+        };
+        var htTouchInfo = { //touchstart 시점의 좌표와 시간을 저장하기
+            nStartX : -1,
+            nStartY : -1,
+            nStartTime : 0
+        };
+        //수평 방향을 판단하는 기준 기울기
+        var nHSlope = ((window.innerHeight) / (window.innerWidth/2)).toFixed(2) * 1;
+
+        function initTouchInfo() { //터치 정보들의 값을 초기화하는 함수
+            htTouchInfo.nStartX = -1;
+            htTouchInfo.nStartY = -1;
+            htTouchInfo.nStartTime = 0;
+        }
+
+        //touchstart 좌표값과 비교하여 현재 사용자의 움직임을 판단하는 함수
+        function getMoveType(x, y) {
+            //0은 수평방향, 1은 수직방향
+            var nMoveType = -1;
+
+            var nX = Math.abs(htTouchInfo.nStartX - x);
+            var nY = Math.abs(htTouchInfo.nStartY - y);
+
+            var direction = (function (before,after){
+                return htTouchInfo.nStartX - x > 0 ? 'next' : 'prev'
+            })(htTouchInfo.nStartX,x)
+
+            var nDis = nX + nY;
+            //현재 움직인 거리가 기준 거리보다 작을 땐 방향을 판단하지 않는다.
+
+
+            if(nDis < 10) {
+                return {
+                    axis : nMoveType
+                }
+            }
+
+            var nSlope = parseFloat((nY / nX).toFixed(2), 10);
+
+            if(nSlope > nHSlope) {
+                nMoveType = 1;
+            } else {
+                nMoveType = 0;
+            }
+
+            return {
+                axis : nMoveType,
+                direction : direction,
+                distance : nDis
+            }
+        }
+
+        function onStart(e) {
+            e.stopPropagation();
+            initTouchInfo(); //터치 정보를 초기화한다.
+            nMoveType = -1; //이전 터치에 대해 분석한 움직임의 방향도 초기화한다.
+            //touchstart 이벤트 시점에 정보를 갱신한다.
+            htTouchInfo.nStartX = e.changedTouches[0].pageX;
+            htTouchInfo.nStartY = e.changedTouches[0].pageY;
+            htTouchInfo.nStartTime = e.timeStamp;
+            bStartEvent = true;
+        }
+
+        function onMove(e) {
+            e.stopPropagation();
+            if(!bStartEvent) {
+                return
+            }
+            var nX = e.changedTouches[0].pageX;
+            var nY = e.changedTouches[0].pageY;
+
+            //현재 touchmMove에서 사용자 터치에 대한 움직임을 판단한다.
+            nMoveType = getMoveType(nX, nY);
+
+            //현재 사용자 움직임을 수직으로 판단해 기본 브라우저의 스크롤 기능을 막고 싶으면 아래 코드를 사용한다.
+            if(nMoveType.axis === 0) {
+                e.preventDefault();
+            }
+        }
+
+        function onEnd(e) {
+            if (animating === true) {
+                return;
+            }
+            e.stopPropagation();
+            if(!bStartEvent) {
+                return
+            }
+
+            if (nMoveType.axis  === 0 && nMoveType.distance > 100) {
+                setDataInteraction(nMoveType.direction);
+            }
+            bStartEvent = false;
+            animating = true;
+            setTimeout(function(){
+                animating = false;
+            },600)
+
+            nMoveType.axis = -1; //분석한 움직임의 방향도 초기화한다.
+            initTouchInfo(); //터치 정보를 초기화한다.
+        }
+
+        function preventDefault(e) {
+            e.preventDefault();
+        }
+
+        var animating = false;
+        document.querySelector('#summary').addEventListener('touchstart', onStart,false);
+        document.querySelector('#summary').addEventListener('touchmove', onMove, false);
+        document.querySelector('#summary').addEventListener('touchend', onEnd,false);
+        document.querySelector('#summary').addEventListener('dragstart', preventDefault, false);
+    }
 })(jQuery)
 
+// scroll animation
+AOS.init();
+AOS.init({
+    // Global settings:
+    disable: false, // accepts following values: 'phone', 'tabvar', 'mobile', boolean, expression or function
+    startEvent: 'DOMContentLoaded', // name of the event dispatched on the document, that AOS should initialize on
+    initClassName: 'aos-init', // class applied after initialization
+    animatedClassName: 'aos-animate', // class applied on animation
+    useClassNames: false, // if true, will add content of `data-aos` as classes on scroll
+    disableMutationObserver: false, // disables automatic mutations' detections (advanced)
+    debounceDelay: 50, // the delay on debounce used while resizing window (advanced)
+    throttleDelay: 1, // the delay on throttle used while scrolling the page (advanced)
+
+
+    // Settings that can be overridden on per-element basis, by `data-aos-*` attributes:
+    offset: 80, // offset (in px) from the original trigger point
+    delay: 0, // values from 0 to 3000, with step 50ms
+    duration: 800, // values from 0 to 3000, with step 50ms
+    easing: 'ease-out-cubic', // default easing for AOS animations
+    once: true, // whether animation should happen only once - while scrolling down
+    mirror: true, // whether elements should animate out while scrolling past them
+    anchorPlacement: 'top-bottom', // defines which position of the element regarding to window should trigger the animation
 
-
-
-// 터치 슬라이더. 그냥 복붙
-/**
- * @name	jQuery.touchSlider
- * @author	dohoons ( http://dohoons.com/ )
- *
- * @version	1.5.1
- * @since	201106
- *
- * @param Object	settings	환경변수 오브젝트
- *		useMouse		-	마우스 드래그 사용 (default true)
- *		roll			-	순환 (default true)
- *		flexible		-	유동 레이아웃 (default true)
- *		resize			-	리사이즈 사용 (default true)
- *		view			-	다중 컬럼 (default 1)
- *		gap				-	아이템 사이 여백 (default 0)
- *		speed			-	애니메이션 속도 (default 150)
- *		range			-	넘김 판정 범위 (default 0.15)
- *		page			-	초기 페이지 (default 1)
- *		transition		-	CSS3 transition 사용 (default true)
- *		btn_prev		-	prev 버튼 (jQuery Object, default null)
- *		btn_next		-	next 버튼 (jQuery Object, default null)
- *		controls		-	prev, next 버튼 생성 (default true)
- *		paging			-	page control 생성 (default true)
- *		sidePage		-	사이드 페이지 사용 (default false)
- *		initComplete 	-	초기화 콜백
- *		counter			-	슬라이드 콜백, 카운터
- *		autoplay		-	자동움직임 관련 옵션 (Object)
- *		breakpoints		-	브레이크 포인트 옵션 (Object, default null)
- *
- * @example
-
-	$('#target').touchSlider();
-	$('.multi-target').touchSlider();
-*/
-
-/* jslint node: true, jquery: true */
-/* globals define */
-
-(function($) {
-	$.fn.touchSlider = function(settings) {
-
-		$.fn.touchSlider.defaults = {
-			useMouse: true,
-			roll: true,
-			flexible: true,
-			resize: true,
-			btn_prev: null,
-			btn_next: null,
-			controls: true,
-			paging: true,
-			speed: 150,
-			view: 1,
-			gap: 0,
-			range: 0.15,
-			page: 1,
-			sidePage: false,
-			transition: true,
-			initComplete: null,
-			counter: null,
-			propagation: false,
-			autoplay: {
-				enable: false,
-				pauseHover: true,
-				addHoverTarget: '',
-				interval: 3500
-			},
-			breakpoints: null
-		};
-
-		var opts = $.extend(true, {}, $.fn.touchSlider.defaults, settings);
-
-		if(opts.breakpoints) {
-			opts.breakpoints.defaultOption = {
-				roll: opts.roll,
-				flexible: opts.flexible,
-				speed: opts.speed,
-				view: opts.view,
-				gap: opts.gap,
-				sidePage: opts.sidePage
-			};
-
-			for(var prop in opts.breakpoints) {
-				if(prop !== 'default') {
-					opts.breakpoints[prop] = $.extend({}, opts.breakpoints.defaultOption, opts.breakpoints[prop]);
-				}
-			}
-		}
-
-		return this.each(function() {
-
-			var _this = this;
-
-			$.fn.extend(this, touchSlider);
-			this.opts = opts;
-			this.init();
-
-			$(window).on('orientationchange resize', function() {
-				_this.resize.call(_this);
-			});
-		});
-
-	};
-
-	var env = {
-		isIE11: navigator.userAgent.indexOf('Trident/7.') > -1,
-		supportsCssTransitions: 'transition' in document.documentElement.style || 'WebkitTransition' in document.documentElement.style
-	};
-
-	var touchSlider = {
-
-		init: function() {
-			var _this = this;
-
-			this._view = this.opts.view;
-			this._speed = this.opts.speed;
-			this._tg = $(this);
-			this._list_wrap = this._tg.children().eq(0);
-			this._list_wrap.find('.blank').remove();
-			this._list = this._list_wrap.children();
-			this._width = parseInt(this._tg.css('width'));
-			this._item_w = parseInt(this._list.css('width'));
-			this._len = this._list.length;
-			this._range = this.opts.range * this._width;
-			this._pos = [];
-			this._start = [];
-			this._startX = 0;
-			this._startY = 0;
-			this._left = 0;
-			this._top = 0;
-			this._drag = false;
-			this._link = true;
-			this._scroll = false;
-			this._hover_tg = [];
-			this._timer = null;
-
-			this._tg
-					.off('touchstart', this.touchstart)
-					.off('touchmove', this.touchmove)
-					.off('touchend', this.touchend)
-					.off('touchcancel', this.touchend)
-					.off('dragstart')
-					.on('dragstart', function(e) { e.preventDefault(); })
-					.on('touchstart', this.touchstart)
-					.on('touchmove', this.touchmove)
-					.on('touchend', this.touchend)
-					.on('touchcancel', this.touchend);
-
-			if(this.opts.useMouse) {
-				this._tg
-					.off('mousedown', this.touchstart)
-					.on('mousedown', this.touchstart);
-			}
-
-			this._list_wrap.css({
-				width: this._width + 'px',
-				overflow: 'visible'
-			});
-
-			if(this.opts.flexible) this._item_w = (this._width - (this._view - 1) * this.opts.gap) / this._view;
-
-			if(this.opts.roll) {
-				if(this._len / this._view <= 1) {
-					this.opts.roll = false;
-				}
-				if(this._len % this._view > 0) {
-					var blank = $(document.createElement(this._list.eq(0).prop('tagName'))).hide().addClass('blank');
-					var cnt = this._view - (this._len % this._view);
-					for(var j=0; j<cnt; ++j) {
-						this._list.parent().append(blank.clone());
-					}
-				}
-				this._list = this._list_wrap.children();
-				this._len = (this._list.length / this._view) * this._view;
-			}
-
-			var page_gap = (this.opts.page > 1 && this.opts.page <= this._len) ? (this.opts.page - 1) * (this._item_w * this._view + this._view * this.opts.gap) : 0;
-
-			for(var i=0, len=this._len, gap=0; i<len; ++i) {
-				gap = this.opts.gap * i;
-
-				this._pos[i] = this._item_w * i - page_gap + gap;
-				this._start[i] = this._pos[i];
-
-				this._list.eq(i).css({
-					float: 'none',
-					position: 'absolute',
-					top: '0',
-					width: this._item_w + 'px'
-				});
-
-				this.move({
-					tg: this._list.eq(i),
-					to: this._pos[i]
-				});
-			}
-
-			if(this.opts.btn_prev && this.opts.btn_next) {
-				this.opts.btn_prev.off('click').on('click', function(e) {
-					_this.animate(1, true);
-					e.preventDefault();
-				});
-				this.opts.btn_next.off('click').on('click', function(e) {
-					_this.animate(-1, true);
-					e.preventDefault();
-				});
-			}
-
-			this._controls = $('<div class="ts-controls"></div>');
-
-			this._tg.nextAll('.ts-controls:eq(0)').remove();
-
-			if(this.opts.paging) {
-				this._controls.append('<div class="ts-paging"></div>');
-				this._tg.after(this._controls);
-
-				var paging = '';
-				var len = Math.ceil(this._len / this._view);
-
-				for(var i=1; i<=len; ++i) {
-					paging += '<button type="button" class="ts-paging-btn">page' + i + '</button>';
-				}
-
-				this._pagingBtn = $(paging);
-
-				this._controls.find('.ts-paging').html(this._pagingBtn).on('click', function(e) {
-					_this.go_page($(e.target).index());
-				});
-			}
-
-			if(this.opts.controls) {
-				this._controls.append('<button type="button" class="ts-prev">Prev</button><button type="button" class="ts-next">Next</button>');
-				this._tg.after(this._controls);
-
-				this._controls.find('.ts-prev, .ts-next').on('click', function(e) {
-					_this.animate($(this).hasClass('ts-prev') ? 1 : -1, true);
-					e.preventDefault();
-				}).on('touchstart mousedown touchend mouseup', function(e) {
-					e.stopPropagation();
-				});
-			}
-
-			if(this.opts.autoplay.enable) {
-				this._hover_tg = [];
-				this._hover_tg.push(this._tg);
-
-				if(this.opts.btn_prev && this.opts.btn_next) {
-					this._hover_tg.push(this.opts.btn_prev);
-					this._hover_tg.push(this.opts.btn_next);
-				}
-
-				if(this.opts.autoplay.addHoverTarget !== "") {
-					this._hover_tg.push($(this.opts.autoplay.addHoverTarget));
-				}
-
-				if(this.opts.autoplay.pauseHover) {
-					$(this._hover_tg).each(function() {
-						$(this).off('mouseenter mouseleave').on('mouseenter mouseleave', function(e) {
-							if(e.type == 'mouseenter') {
-								_this.autoStop();
-							} else {
-								_this.autoStop();
-								_this.autoPlay();
-							}
-						});
-					});
-				}
-
-				this.autoStop();
-				this.autoPlay();
-			}
-
-			this._tg.off('click').on('click', 'a', function(e) {
-				if(!_this._link) {
-					e.preventDefault();
-				}
-			});
-
-			this.initComplete();
-
-			if(this.opts.breakpoints) {
-				this.resize();
-			} else {
-				this.counter();
-			}
-		},
-
-		initComplete: function() {
-			if(this.opts.sidePage) {
-				this.animate(-1, true, 0);
-				this.animate(1, true, 0);
-			}
-			if(typeof this.opts.initComplete == 'function') {
-				this.opts.initComplete.call(this,this);
-			}
-		},
-
-		resize: function() {
-			if(this.opts.flexible) {
-				var tmp_w = this._item_w;
-
-				this._width = parseInt(this._tg.css('width'));
-				this._item_w = (this._width - (this._view - 1) * this.opts.gap) / this._view;
-				this._range = this.opts.range * this._width;
-
-				this._list.css({
-					width: this._item_w + 'px'
-				});
-				this._list.parent().css({
-					width: this._width + 'px'
-				});
-
-				for(var i=0, len=this._len, gap=0; i<len; ++i) {
-					gap = this.opts.gap * i;
-
-					this._pos[i] = (this._pos[i] - gap) / tmp_w * this._item_w + gap;
-					this._start[i] = (this._start[i] - gap) / tmp_w * this._item_w + gap;
-
-					this.move({
-						tg: this._list.eq(i),
-						to: this._pos[i]
-					});
-				}
-			}
-
-			if(this.opts.breakpoints) {
-				var winSize = this._width;
-				var bpDefaultOpt = this.opts.breakpoints.defaultOption;
-				var bpCurrentOpt = bpDefaultOpt;
-				var optionChanged = false;
-
-				for(var prop in this.opts.breakpoints) {
-					if(Boolean(Number(prop)) && winSize <= Number(prop)) {
-						bpCurrentOpt = this.opts.breakpoints[prop];
-						break;
-					}
-				}
-				for(var optionProp in bpCurrentOpt) {
-					if(bpDefaultOpt.hasOwnProperty(optionProp) && this.opts[optionProp] !== bpCurrentOpt[optionProp]) {
-						this.opts[optionProp] = bpCurrentOpt[optionProp];
-						optionChanged = true;
-					}
-				}
-
-				if(optionChanged) {
-					this.init();
-				}
-			}
-
-			this.counter();
-		},
-
-		touchstart: function(e) {
-			if(e.target.tagName === 'IMG') {
-				e.preventDefault();
-			}
-			if(!this.opts.propagation) {
-				e.stopPropagation();
-			}
-			if((e.type == 'touchstart' && e.originalEvent.touches.length <= 1) || e.type == 'mousedown') {
-				this._startX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
-				this._startY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY;
-				this._scroll = false;
-				this._start = this._pos.slice(0);
-
-				if(e.type == 'mousedown') {
-					$(document)
-						.on('mousemove', this, this.mousemove)
-						.on('mouseup', this, this.mouseup);
-				}
-			}
-		},
-
-		mousemove: function(e) {
-			e.data.touchmove.call(e.data, e);
-		},
-
-		mouseup: function(e) {
-			$(document)
-				.off('mousemove', e.data.mousemove)
-				.off('mouseup', e.data.mouseup);
-
-			e.data.touchend.call(e.data, e);
-		},
-
-		touchmove: function(e) {
-			if(!this.opts.propagation) {
-				e.stopPropagation();
-			}
-			if((e.type == 'touchmove' && e.originalEvent.touches.length <= 1) || e.type == 'mousemove') {
-				this._left = (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX) - this._startX;
-				this._top = (e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY) - this._startY;
-				var w = this._left < 0 ? this._left * -1 : this._left;
-				var h = this._top < 0 ? this._top * -1 : this._top;
-
-				if ((w < h || this._scroll) && !this._drag) {
-					this._left = 0;
-					this._drag = false;
-					this._link = true;
-					this._scroll = true;
-				} else {
-					e.preventDefault();
-					this._drag = true;
-					this._link = false;
-					this._scroll = false;
-					this.position(e);
-				}
-
-				for(var i=0, len=this._len; i<len; ++i) {
-					var tmp = this._start[i] + this._left;
-
-					this.move({
-						tg: this._list.eq(i),
-						to: tmp
-					});
-
-					this._pos[i] = tmp;
-				}
-			}
-		},
-
-		touchend: function(e) {
-			if(!this.opts.propagation) {
-				e.stopPropagation();
-			}
-			if(this._scroll) {
-				this._drag = false;
-				this._link = true;
-				this._scroll = false;
-			} else {
-				this.animate(this.direction());
-
-				this._drag = false;
-				this._scroll = true;
-
-				var _this = this;
-				setTimeout(function() {
-					_this._link = true;
-				},50);
-			}
-		},
-
-		position: function(d) {
-			var len = this._len;
-			var view = this._view;
-			var page_gap = view * this._item_w + view * this.opts.gap;
-			var i = 0;
-
-			if(d == -1 || d == 1) {
-				this._startX = 0;
-				this._start = this._pos.slice(0);
-				this._left = d * page_gap;
-			} else {
-				if(this._left > page_gap) this._left = page_gap;
-				if(this._left < - page_gap) this._left = - page_gap;
-			}
-
-			if(this.opts.roll) {
-				var tmp_pos = this._pos.slice(0).sort(function(a,b){return a-b;});
-				var max_chk = tmp_pos[len-view];
-				var p_min = $.inArray(tmp_pos[0], this._pos);
-				var p_max = $.inArray(max_chk, this._pos);
-				var p = (this.opts.sidePage) ? 3 : 1;
-
-				if(view <= 1) max_chk = len - p;
-
-				if((d == 1 && tmp_pos[p-1] >= 0) || (this._drag && tmp_pos[p-1] > 0)) {
-					for(i=0; i<view; ++i, ++p_min, ++p_max) {
-						this._start[p_max] = this._start[p_min] - page_gap;
-						this.move({
-							tg: this._list.eq(p_max),
-							to: this._start[p_max]
-						});
-					}
-				} else if((d == -1 && tmp_pos[max_chk] <= 0) || (this._drag && tmp_pos[max_chk] <= 0)) {
-					for(i=0; i<view; ++i, ++p_min, ++p_max) {
-						this._start[p_min] = this._start[p_max] + page_gap;
-						this.move({
-							tg: this._list.eq(p_min),
-							to: this._start[p_min]
-						});
-					}
-				}
-			} else {
-				if(this.limit_chk()) this._left = this._left / 2;
-			}
-		},
-
-		move: function(obj) {
-			var transition = (obj.speed !== undefined) ? obj.speed + 'ms ease' : 'none';
-			var transform = 'translate3d(' + obj.to + 'px,0,0)';
-			var transStyle = {
-				'left': '0',
-				'-moz-transition': transition,
-				'-moz-transform': transform,
-				'-ms-transition': transition,
-				'-ms-transform': transform,
-				'-webkit-transition': transition,
-				'-webkit-transform': transform,
-				'transition': transition,
-				'transform': transform
-			};
-			var list_wrap = this._list_wrap;
-			var list_wrap_gap = 0;
-
-			if(env.supportsCssTransitions && this.opts.transition) {
-				if(obj.speed === undefined) {
-					obj.tg.css(transStyle);
-				} else {
-					if(obj.btn_click) {
-						setTimeout(function() {
-							obj.tg.css(transStyle);
-						}, 10);
-					} else {
-						list_wrap_gap = (obj.gap > 0) ? -(obj.to - obj.from) : obj.from - obj.to;
-
-						obj.tg.css({
-							'left': obj.to + 'px',
-							'-moz-transition': 'none',
-							'-moz-transform': 'none',
-							'-ms-transition': 'none',
-							'-ms-transform': 'none',
-							'-webkit-transition': 'none',
-							'-webkit-transform': 'none',
-							'transition': 'none',
-							'transform': 'none'
-						});
-
-						list_wrap.css(env.isIE11 ? {
-							transition: 'none',
-							transform: 'none',
-							left: list_wrap_gap + 'px'
-						} : {
-							transition: 'none',
-							transform: 'translate3d(' + list_wrap_gap + 'px,0,0)'
-						});
-
-						setTimeout(function() {
-							list_wrap.css(env.isIE11 ? {
-								transition: obj.speed + 'ms ease',
-								left: '0'
-							} : {
-								transition: obj.speed + 'ms ease',
-								transform: 'translate3d(0,0,0)'
-							});
-						}, 10);
-					}
-				}
-			} else {
-				if(obj.speed === undefined) {
-					obj.tg.css('left', obj.to + 'px');
-				} else {
-					obj.tg.stop().animate({'left': obj.to + 'px'}, obj.speed);
-				}
-			}
-		},
-
-		animate: function(d, btn_click, spd) {
-			if(this._drag || !this._scroll || btn_click) {
-				var speed = (spd > -1) ? spd : this._speed;
-				var gap = d * (this._item_w * this._view + this._view * this.opts.gap);
-				var list = this._list;
-				var from = 0;
-				var to = 0;
-
-				if(btn_click) this.position(d);
-				if(this._left === 0 || (!this.opts.roll && this.limit_chk()) ) gap = 0;
-
-				for(var i=0, len = this._len; i<len; ++i) {
-					from = this._pos[i];
-					to = this._pos[i] = this._start[i] + gap;
-
-					this.move({
-						tg: list.eq(i),
-						gap: gap,
-						from: from,
-						to: to,
-						speed: speed,
-						btn_click: btn_click
-					});
-				}
-
-				if(d !== 0) {
-					this.counter();
-				}
-			}
-		},
-
-		direction: function() {
-			var r = 0;
-
-			if(this._left < -(this._range)) r = -1;
-			else if(this._left > this._range) r = 1;
-
-			if(!this._drag || this._scroll) r = 0;
-
-			return r;
-		},
-
-		limit_chk: function() {
-			var last_p = parseInt((this._len - 1) / this._view) * this._view;
-			return ( (this._start[0] === 0 && this._left > 0) || (this._start[last_p] === 0 && this._left < 0) );
-		},
-
-		go_page: function(i) {
-			var crt = ($.inArray(0, this._pos) / this._view) + 1;
-			var cal = crt - (i + 1);
-
-			while(cal !== 0) {
-				if(cal < 0) {
-					this.animate(-1, true);
-					cal++;
-				} else if(cal > 0) {
-					this.animate(1, true);
-					cal--;
-				}
-			}
-		},
-
-		get_page: function() {
-			return {
-				obj: this,
-				total: Math.ceil(this._len / this._view),
-				current: ($.inArray(0, this._pos) / this._view) + 1
-			};
-		},
-
-		counter: function() {
-			var currentPage = this.get_page();
-
-			if($.inArray(0, this._pos) < 0) {
-				this.opts.page = 0;
-				this.init();
-			}
-
-			this.opts.page = currentPage.current;
-
-			if(this.opts.resize) {
-				this._tg.css({
-					height: this._list.eq(this.opts.page-1).height() + 'px'
-				});
-			}
-
-			if(this.opts.paging) {
-				this._pagingBtn.eq(currentPage.current - 1).addClass('ts-paging-active').siblings().removeClass('ts-paging-active');
-			}
-
-			if(typeof this.opts.counter == 'function') {
-				this.opts.counter.call(this, currentPage);
-			}
-		},
-
-		autoPlay: function() {
-			var _this = this;
-			this._timer = setInterval(function() {
-				if(_this.opts.autoplay.enable && !_this._drag) {
-					var page = _this.get_page();
-					if(page.current == page.total && !_this.opts.roll) {
-						_this.go_page(0);
-					} else {
-						_this.animate(-1, true);
-					}
-				}
-			}, this.opts.autoplay.interval);
-		},
-
-		autoStop: function() {
-			clearInterval(this._timer);
-		},
-
-		autoPauseToggle: function() {
-			if(this.opts.autoplay.enable) {
-				this.autoStop();
-				this.opts.autoplay.enable = false;
-				return 'stopped';
-			} else {
-				this.opts.autoplay.enable = true;
-				this.autoPlay();
-				return 'started';
-			}
-		}
-
-	};
 });

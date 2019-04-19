@@ -112,7 +112,7 @@ gulp.task('connect', function() {
 // 파일 변경 감지 :: local
 gulp.task('watch', function(callback) {
     livereload.listen();
-    gulp.watch(path.source.js+'/*.js',['copy:js'],callback);
+    gulp.watch(path.source.js+'/*.*',['copy:js'],callback);
     gulp.watch(path.source.style+'/*.{scss,sass,css}',['convert:sass:sourcemap'],callback);
 
     // 탬플릿은 세밀하게 지정해줘야 될지도...
@@ -177,7 +177,7 @@ gulp.task('convert:sass', function () {
 
 // js 파일 :: local, 복사
 gulp.task('copy:js',function () {
-    return gulp.src([path.source.js + '/*.js', path.source.js + '/*.json'])
+    return gulp.src([path.source.js + '/*.*', path.source.js + '/*.json'])
         .pipe(gulp.dest(path.deploy + '/js'))
         .pipe(livereload());
 });
@@ -274,7 +274,7 @@ gulp.task('copy:conf',function () {
 
 // image :: local, copy
 gulp.task('copy:image', function () {
-    return gulp.src(path.source.image + '/**/*.{jpg,png,gif,svg}')
+    return gulp.src(path.source.image + '/**/*.{jpg,png,gif,svg,ico}')
         .pipe(gulp.dest(path.deploy + '/image'))
         .pipe(livereload());
 });
@@ -304,15 +304,13 @@ gulp.task('html',function () {
 });
 
 
-// 배포
-gulp.task('release', function () {
-    return gulp.src(path.deploy + '/**/*')
-        .pipe(publish({
-            message : 'validator.one :: 깃허브 페이지에 반영됨. Published to Github pages'
-        }))
-});
+gulp.task('copy:to:rails', () => {
+    // deploy 디렉토리를 public 디렉토리로 옮깁니다.
+    console.log('copy ./staticpage/deploy to ./public directory')
 
-
+    return gulp.src('./deploy/**/*.*')
+        .pipe(gulp.dest('../public'))
+})
 
 
 
@@ -327,9 +325,5 @@ gulp.task('local', function () {
 });
 
 gulp.task('build',function () {
-    runSequence('clean','copy:image','copy:fonts','copy:pdf','convert:sass','copy:conf','html',['copy:js','copy:node_modules']);
-});
-
-gulp.task('deploy',function () {
-    runSequence('clean','copy:image','copy:fonts','copy:pdf','convert:sass','copy:conf','html',['copy:js','copy:node_modules'],'release');
+    runSequence('clean','imagemin','copy:image','copy:fonts','copy:pdf','convert:sass','copy:conf','html',['copy:js','copy:node_modules'],'copy:to:rails');
 });

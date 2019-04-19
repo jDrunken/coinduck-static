@@ -2,6 +2,26 @@
     @include screen_reader();
 }
 
+body {
+    background:#242424;
+}
+
+.barrior {
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 99; /* Higher than anything else in the document */
+    background-color:#fff;
+
+    transition:opacity 0.3s ease-in-out;
+
+    &.remove {
+        opacity:0;
+    }
+}
+
 // layout
 // ------------------------------------------------------------
 
@@ -14,11 +34,19 @@ article > section > .container {
     margin-right:auto;
 
     // 데스크탑 사이즈
-    max-width:$container-width;
 
     padding:0 $padding-global;
+    @include media ('<=768px') {
+        padding-left:20px;
+        padding-right:20px;
+    }
 
 }
+
+header > .container {
+    max-width:$container-width-normal;
+}
+
 
 article > section > .container {
 
@@ -26,20 +54,28 @@ article > section > .container {
     padding-top:170px;
     padding-bottom:170px;
 
+    @include media ('<=768px') {
+        padding-top:40px;
+        padding-bottom:40px;
+    }
 }
-
 
 
 // font style
 // ------------------------------------------------------------
 
 article {
+    background-color:$white;
     // base font style
     font-size: rem(16);
     font-weight: 500;
     line-height: 1.63;
     letter-spacing: -0.2px;
     color: $font-base;
+
+    @include media ('<=768px') {
+        font-size:rem(14);
+    }
 
     h2,
     h3,
@@ -52,14 +88,32 @@ article {
     // style
     h2 {
         font-size: rem(24);
+
         font-weight: bold;
         color: $red;
+        line-height:1.34;
+
+        @include media ('<=768px') {
+            font-size:rem(14);
+        }
     }
 
     h3 {
         font-size: rem(44);
         font-weight: 800;
         color:$font-black;
+        line-height:1.36;
+
+        @include media ('<=768px') {
+            line-height:1.36;
+            font-size:rem(24);
+        }
+
+        @include media ('>550px') {
+            &:lang(ko) br {
+                display:none;
+            }
+        }
     }
 
     h4 {
@@ -67,11 +121,36 @@ article {
         font-weight: 800;
         line-height: 1;
         color:$font-black;
-    }
 
+        @include media ('<=768px') {
+            line-height:1.67;
+            font-size:rem(20);
+        }
+    }
 
     // 기본간격
     h2 {
         margin-bottom:9px;
+        @include media ('<=768px') {
+            margin-bottom:5px;
+        }
+    }
+}
+
+article > section > .container {
+    // base setting
+    p {
+        font-family:$font-family-roboto;
+        &:lang(ko) {
+            font-family:$font-family-ko-only;
+        }
+
+        font-weight:400;
+        font-size: rem(18);
+        line-height: 1.67;
+
+        @include media ('<=768px') {
+            font-size:rem(14);
+        }
     }
 }

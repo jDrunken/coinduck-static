@@ -5,6 +5,9 @@
 @import 'font.scss';
 @import 'env.scss';
 
+// plugin
+@import 'aos.scss';
+
 // reset
 @import 'base.scss';
 
@@ -13,6 +16,7 @@
 
 // details
 @import 'common.scss';
+@import 'popup.scss';
 
 @import 'header.scss';
 @import 'index.summary.scss';
